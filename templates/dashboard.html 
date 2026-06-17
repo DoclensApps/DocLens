@@ -1,1 +1,34 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>DocLens</title>
+</head>
+<body>
+  <h1>DocLens</h1>
+  <p>Welcome, {{ user["username"] }}.</p>
+  <p>Status: {% if user["is_pro"] %}Pro{% else %}Free{% endif %}</p>
+
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for message in messages %}
+        <p>{{ message }}</p>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  {% if not user["is_pro"] %}
+    <form action="{{ url_for('create_checkout_session') }}" method="post">
+      <button type="submit">Go Pro</button>
+    </form>
+  {% else %}
+    <form method="post" action="{{ url_for('doclens') }}">
+      <textarea name="document" rows="10" cols="60" placeholder="Paste legal text here"></textarea><br>
+      <button type="submit">Simplify</button>
+    </form>
+  {% endif %}
+
+  <p><a href="{{ url_for('logout') }}">Logout</a></p>
+</body>
+</html>
 
